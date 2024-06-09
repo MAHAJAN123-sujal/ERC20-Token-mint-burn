@@ -8,7 +8,7 @@ contract MyERC20Token is ERC20{
  address public owner;
 
     modifier onlyOwner() {
-        require(msg.sender == owner, "Caller is not the owner");
+        require(msg.sender == owner, "Not the owner");
         _;
     }
 
@@ -18,11 +18,11 @@ contract MyERC20Token is ERC20{
         _mint(msg.sender, initialSupply); 
     }
 
-    function mint(address to, uint256 amount) public onlyOwner {
+    function mintToken(address to, uint256 amount) public onlyOwner {
         _mint(to, amount);
     }
 
-    function burn(uint256 amount) public {
+    function burnToken(uint256 amount) public {
         _burn(msg.sender, amount);
     }
 }
