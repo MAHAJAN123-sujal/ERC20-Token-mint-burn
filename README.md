@@ -1,6 +1,6 @@
 # MyERC20Token
 
-This project contains an ERC20 token smart contract created using OpenZeppelin's ERC20 implementation. The token includes minting, burning and transfering functionalities, and the owner of the contract has exclusive rights to mint new tokens.
+This project contains an ERC20 token smart contract created using OpenZeppelin's ERC20 implementation. The token includes minting, burning, and transferring functionalities, and the owner of the contract has exclusive rights to mint new tokens.
 
 ## Description
 
@@ -25,31 +25,50 @@ The `MyERC20Token` smart contract is written in Solidity and utilizes the OpenZe
 ```solidity
 constructor(string memory name, string memory symbol) ERC20(name, symbol) {
     owner = msg.sender;
-    uint256 initialSupply = 10000 * 10**18;
-    _mint(msg.sender, initialSupply); 
+    uint256 initialSupply = 10000 * 10**uint(decimals());
+    _mint(msg.sender, initialSupply);
 }
 ```
 The constructor sets the contract deployer as the owner, initializes the token with a name and symbol, and mints an initial supply of 10,000 tokens to the owner.
 
 ### Functions
 
-#### mint
+#### mintToken
 
 ```solidity
-function mint(address to, uint256 amount) public onlyOwner {
+function mintToken(address to, uint256 amount) public onlyOwner {
     _mint(to, amount);
 }
 ```
 Mints new tokens and assigns them to the specified address. Only the owner can call this function.
 
-#### burn
+#### burnToken
 
 ```solidity
-function burn(uint256 amount) public {
+function burnToken(uint256 amount) public {
     _burn(msg.sender, amount);
 }
 ```
 Burns a specified amount of tokens from the caller's balance.
+
+#### decimals
+
+```solidity
+function decimals() public view virtual override returns (uint8) {
+    return 0;
+}
+```
+Overrides the default `decimals` function to set the token's decimal places to 0.
+
+#### transferTokens
+
+```solidity
+function transferTokens(address to, uint256 amount) public returns (bool) {
+    _transfer(msg.sender, to, amount);
+    return true;
+}
+```
+Transfers tokens from the caller to the specified address.
 
 ## Deployment
 
@@ -84,10 +103,13 @@ Once the contract is deployed, you can interact with it using Remix IDE:
 
 - **Mint Tokens**:
     - Ensure you are connected as the contract owner in MetaMask.
-    - Call the `mint` function with the recipient address and amount of tokens to mint.
+    - Call the `mintToken` function with the recipient address and amount of tokens to mint.
 
 - **Burn Tokens**:
-    - Call the `burn` function with the amount of tokens to burn from the caller's balance.
+    - Call the `burnToken` function with the amount of tokens to burn from the caller's balance.
+
+- **Transfer Tokens**:
+    - Call the `transferTokens` function with the recipient address and amount of tokens to transfer.
 
 ## License
 
