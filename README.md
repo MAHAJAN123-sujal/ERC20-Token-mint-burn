@@ -33,19 +33,19 @@ The constructor sets the contract deployer as the owner, initializes the token w
 
 ### Functions
 
-#### mintToken
+#### MyMintToken
 
 ```solidity
-function mintToken(address to, uint256 amount) public onlyOwner {
+function MyMintToken(address to, uint256 amount) public onlyOwner {
     _mint(to, amount);
 }
 ```
 Mints new tokens and assigns them to the specified address. Only the owner can call this function.
 
-#### burnToken
+#### MyBurnToken
 
 ```solidity
-function burnToken(uint256 amount) public {
+function MyBurnToken(uint256 amount) public {
     _burn(msg.sender, amount);
 }
 ```
@@ -60,10 +60,14 @@ function decimals() public view virtual override returns (uint8) {
 ```
 Overrides the default `decimals` function to set the token's decimal places to 0.
 
-#### transferTokens
+#### MyTransferTokens
 
 ```solidity
-function transferTokens(address to, uint256 amount) public returns (bool) {
+function MyTransferTokens(address to, uint256 amount) public returns (bool) {
+    require(to != address(0), "Transfer to the zero address");
+    require(balanceOf(msg.sender) >= amount, "Transfer amount exceeds balance");
+
+    // Perform the transfer
     _transfer(msg.sender, to, amount);
     return true;
 }
@@ -103,13 +107,13 @@ Once the contract is deployed, you can interact with it using Remix IDE:
 
 - **Mint Tokens**:
     - Ensure you are connected as the contract owner in MetaMask.
-    - Call the `mintToken` function with the recipient address and amount of tokens to mint.
+    - Call the `MyMintToken` function with the recipient address and amount of tokens to mint.
 
 - **Burn Tokens**:
-    - Call the `burnToken` function with the amount of tokens to burn from the caller's balance.
+    - Call the `MyBurnToken` function with the amount of tokens to burn from the caller's balance.
 
 - **Transfer Tokens**:
-    - Call the `transferTokens` function with the recipient address and amount of tokens to transfer.
+    - Call the `MyTransferTokens` function with the recipient address and amount of tokens to transfer.
 
 ## License
 
