@@ -17,19 +17,23 @@ contract MyERC20Token is ERC20 {
         _mint(msg.sender, initialSupply);
     }
 
-    function mintToken(address to, uint256 amount) public onlyOwner {
+    function MyMintToken(address to, uint256 amount) public onlyOwner {
         _mint(to, amount);
     }
 
-    function burnToken(uint256 amount) public {
+    function MyBurnToken(uint256 amount) public {
         _burn(msg.sender, amount);
     }
 
     function decimals() public view virtual override returns (uint8) {
-        return 0;
+        return 0; // Return 0 if you don't want any decimal places
     }
 
-    function transferTokens(address to, uint256 amount) public returns (bool) {
+    function MyTransferTokens(address to, uint256 amount) public returns (bool) {
+        require(to != address(0), "Transfer to the zero address");
+        require(balanceOf(msg.sender) >= amount, "Transfer amount exceeds balance");
+
+        // Perform the transfer
         _transfer(msg.sender, to, amount);
         return true;
     }
